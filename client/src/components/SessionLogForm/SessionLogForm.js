@@ -5,10 +5,11 @@ class SessionLogForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notes: "please enter some fucking notes",
       logValid: "true",
       logType: "occured",
     };
+    this.state = Object.assign(this.state, this.props.sessionData);
+    this.state.notes = "put some fucking notes here";
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -22,10 +23,15 @@ class SessionLogForm extends Component {
   }
 
   handleSubmit(event) {
-    alert(
-      `notes: ${this.state.notes}... Log is accurate: ${this.state.logValid}... Log Type: ${this.state.logType}`
-    );
     event.preventDefault();
+    console.log(JSON.stringify(this.state));
+    fetch("/logger", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.state),
+    })
+      .then((res) => res.json())
+      .then((json) => console.log(json));
   }
 
   render() {
@@ -88,9 +94,7 @@ class SessionLogForm extends Component {
           <input type="submit" value="Submit" />
         </form>
         <h3>
-          {this.props.sessionData
-            ? JSON.stringify(this.props.sessionData)
-            : "loading"}
+          {this.props.sessionData ? JSON.stringify(this.state) : "loading"}
         </h3>
       </div>
     );

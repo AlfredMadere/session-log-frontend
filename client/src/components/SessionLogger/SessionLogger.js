@@ -34,10 +34,10 @@ class SessionLogger extends Component {
     //If the status of the session is "occured", render LogForm. If status is "logged" render EditForm. Otherwise render MissingSession
     return (
       <div>
-        {this.state.status === "occured" ? (
-          <SessionEditForm sessionData={this.state.sessionData} />
-        ) : this.state.status === "logged" ? (
+        {this.state.status === "unlogged" ? (
           <SessionLogForm sessionData={this.state.sessionData} />
+        ) : this.state.status === "logged" ? (
+          <SessionEditForm sessionData={this.state.sessionData} />
         ) : (
           <MissingSession />
         )}

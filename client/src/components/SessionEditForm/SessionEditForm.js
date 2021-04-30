@@ -4,15 +4,13 @@ import SessionData from "../SessionData/SessionData";
 class SessionEditForm extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.sessionData.notes);
     this.state = {
-      notes: this.props.sessionData.notes,
       logValid: "true",
       logType: "occured",
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = Object.assign(this.state, this.props.sessionData);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -24,10 +22,15 @@ class SessionEditForm extends Component {
   }
 
   handleSubmit(event) {
-    alert(
-      `notes: ${this.state.notes}... Log is correct: ${this.state.logValid}... Log Type: ${this.state.logType}`
-    );
     event.preventDefault();
+    console.log(JSON.stringify(this.state));
+    fetch("/logger", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.state),
+    })
+      .then((res) => res.json())
+      .then((json) => console.log(json));
   }
 
   render() {
@@ -88,9 +91,7 @@ class SessionEditForm extends Component {
           <input type="submit" value="Submit" />
         </form>
         <h3>
-          {this.props.sessionData
-            ? JSON.stringify(this.props.sessionData)
-            : "loading"}
+          {this.props.sessionData ? JSON.stringify(this.state) : "loading"}
         </h3>
       </div>
     );
