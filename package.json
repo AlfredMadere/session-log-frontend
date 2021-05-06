@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "PORT=3001 nodemon ./bin/www"
+    "server": "bash -c ' source ./set_env ; nodemon ./bin/www' "
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
